@@ -24,7 +24,13 @@ export const BookCheckoutPage = () => {
         const fetchBooks = async () => {
             const baseUrl: string = `http://localhost:8081/api/books/${bookId}`;
 
-            const response = await fetch(baseUrl);
+            const token = localStorage.getItem("jwtToken");
+            const response = await fetch(baseUrl, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
 
             if (!response.ok) {
                 throw new Error('something went wrong!');
@@ -59,7 +65,14 @@ export const BookCheckoutPage = () => {
         const fetchBookReviews = async () => {
             const reviewUrl: string = `http://localhost:8081/api/reviews/search/findByBookId?bookId=${bookId}`;
 
-            const responseReviews = await fetch(reviewUrl);
+            const token = localStorage.getItem("jwtToken");
+            
+            const responseReviews = await fetch(reviewUrl, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
 
             if (!responseReviews.ok) {
                 throw new Error('something went wrong!');

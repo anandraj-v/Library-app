@@ -1,0 +1,13 @@
+ const data = await response.json();
+        localStorage.setItem('token', data.token);
+
+        const token = localStorage.getItem('token');
+
+        const responseAuth = await fetch('http://localhost:8081/books', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // 🔑 send token
+          }
+          });
+        

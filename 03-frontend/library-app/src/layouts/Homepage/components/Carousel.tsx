@@ -16,8 +16,8 @@ export const Carousel = () => {
             const baseUrl: string = "http://localhost:8081/api/books";
             const url: string = `${baseUrl}?page=0&size=9`;
 
-            const response = await fetch(url);
-
+              const response = await fetch(url);
+    
             if (!response.ok) {
                 throw new Error('something went wrong!');
             }

@@ -29,20 +29,29 @@ export const SearchBooksPage = () => {
                 let searchWithPage = searchUrl.replace('<pageNumber>',`${currentPage-1}`)
                 url = baseUrl + searchWithPage;
             }
-
-            const response = await fetch(url);
+            // Get token from localStorage
+            //const token = localStorage.getItem("jwtToken");
+          
+            const response = await fetch(url, {
+               // method: 'GET',
+                headers: {
+                  //  'Authorization': `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                credentials: 'include',
+            }   );
 
             if (!response.ok) {
-                throw new Error('something went wrong!');
+                throw new Error(`HTTP Error ${response.status}: Failed to fetch books`);
             }
 
             const responseJson = await response.json();
 
-            const responseData = responseJson._embedded.books;
+            const responseData = responseJson._embedded?.books || [];
 
-            setTotalAmountOfBooks(responseJson.page.totalElements);
+            setTotalAmountOfBooks(responseJson.page?.totalElements || 0);
 
-            setTotalPages(responseJson.page.totalPages);
+            setTotalPages(responseJson.page?.totalPages || 0);
 
             const loadedBooks: BookModel[] = [];
 
@@ -83,7 +92,7 @@ export const SearchBooksPage = () => {
     }
     const searchHandleChange = () => {
         setCurrentPage(1);
-        if (search === '') {
+        if (search.trim() === '') {
             setSearchUrl('');
 
         } else {
